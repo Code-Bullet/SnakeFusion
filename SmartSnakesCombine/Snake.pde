@@ -44,9 +44,6 @@ class Snake {
     //intiate the food
     food = new Food();
 
-
-
-
     brain = new NeuralNet(24, 18, 4);//create a neural net with 24 input neurons 18 hidden neurons and 4 output neurons
     leftToLive = 200;
   }

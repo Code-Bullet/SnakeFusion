@@ -3,7 +3,7 @@ import java.io.File;
 World world;//world which stores the species / populations
 
 World worldOfLegends;//world containing the legends, used for training the legends to be even better
-
+UI ui; //contains the ui elements
 
 int speed = 30;//the frame rate
 
@@ -15,18 +15,25 @@ boolean fusionGo =false;//true if testing the snake fusion
 
 float globalMutationRate = 0.01;
 
+int windowWidth = 800;
+int windowHeight = 500;
+
+//---------------------------------------------------------------------------------------------------------------------------------------------------------
+void settings() {
+  ui = new UI(windowWidth, windowHeight);
+}
 //---------------------------------------------------------------------------------------------------------------------------------------------------------  
 //run on startup
 void setup() {
   frameRate(speed);
-  size(800, 500);
   world = new World(5, 2000);
 }
 //---------------------------------------------------------------------------------------------------------------------------------------------------------  
 void draw() {
   background(40);
 
-  drawData();
+  ui.drawData();
+  ui.drawLegend();
   
   //training/evolving the legend snakes
   if (trainLegendSnakes) {
@@ -111,7 +118,7 @@ void keyPressed() {
     showingLegend = true;
     break;
   case 'h'://halve the mutation rate
-    globalMutationRate /=2;
+    globalMutationRate /= 2;
     break;
   case 'd'://double the mutation rate
     globalMutationRate *= 2;
@@ -124,38 +131,5 @@ void keyPressed() {
     }
 
     
-  }
-}
-
-//---------------------------------------------------------------------------------------------------------------------------------------------------------  
-void drawData() {
-  fill(255);
-  stroke(255);
-  line(400, 0, 400, 400);
-  line(0, 400, 800, 400);
-  textSize(30);
-
-  //training/evolving the legend snakes
-  if (trainLegendSnakes) {
-    text("Generation: " + (worldOfLegends.gen), 10, 100); 
-    text("Speed: " + speed, 10, 150);
-    text("Global Best: " + (worldOfLegends.worldBestScore), 10, 200);
-    text("mutation Rate: " + globalMutationRate, 10, 250);      
-
-    //testing a single legend
-  } else if (showingLegend) {
-    text("Score: " + (world.legend.len-4), 10, 100); 
-
-    // testing the supersnake fusion
-  } else if (fusionGo) {
-    text("Score: " + (world.fusedSnake.len-4), 10, 100); 
-
-    //training/evolving population normally
-  } else {
-
-    text("Generation: " + (world.gen), 10, 100); 
-    text("Speed: " + speed, 10, 150);
-    text("Global Best: " + (world.worldBestScore), 10, 200);
-    text("mutation Rate: " + globalMutationRate, 10, 250);
   }
 }

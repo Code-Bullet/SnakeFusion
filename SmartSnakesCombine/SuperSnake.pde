@@ -2,16 +2,13 @@
 
 class SuperSnake {
 
-
-
-
   int len = 1;//the length of the snake
   PVector pos;//position of the head of the snake
   ArrayList<PVector> tailPositions; //all the positions of the tail of the snake
   PVector vel;//the velocity of the snake i.e. direction it will move next
   PVector temp; //just a temporary PVector which gets used a bunch
   Food food;//the food that this snake needs to eat
-
+  NeuralNet[] brain; // the array of neural nets controlling the snake
   float[] vision = new float[24]; //the inputs for the neural net
   float[] decision; // the output of the neural net
 
@@ -20,15 +17,9 @@ class SuperSnake {
   int leftToLive = 500; //the number of moves left to live if this gets down to 0 the snake dies
   //this is to prevent the snakes doing circles forever
 
-
-
   int growCount = 0; //the amount the snake still needs to grow
 
   boolean alive = true;  //true if the snake is alive
-
-
-
-  NeuralNet[] brain; // the array of neural nets controlling the snake
 
   SuperSnakeClone[] clones;
 
@@ -57,7 +48,6 @@ class SuperSnake {
     len+=3;
 
     food = new Food();
-    
 
     brain = demBrains;
 

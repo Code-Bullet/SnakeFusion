@@ -1,0 +1,6 @@
+.idea/
+SmartSnakesCombine/application.windows32/
+SmartSnakesCombine/application.windows64/
+SmartSnakesCombine/output/
+SmartSnakesCombine/data/
+!SmartSnakesCombine/data/snakesStored.csv
