@@ -55,7 +55,7 @@ class NeuralNet {
     
     //create second layer weights(hidden layers)
     //bias included for each hidden layer in for loop
-    for(int i  = 1; i < hiddenLayers; i++)
+    for(int i  = 1; i < hLayers; i++)
     {
       weights[i] = new Matrix(hNodes, hNodes +1)
     }
