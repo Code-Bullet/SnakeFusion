@@ -3,10 +3,13 @@ class NeuralNet {
   int iNodes;//No. of input nodes
   int hNodes;//No. of hidden nodes
   int oNodes;//No. of output nodes
+  int hLayers;//No. of hidden layers
 
   Matrix whi;//matrix containing weights between the input nodes and the hidden nodes
   Matrix whh;//matrix containing weights between the hidden nodes and the second layer hidden nodes
   Matrix woh;//matrix containing weights between the second hidden layer nodes and the output nodes
+  Matrix weights[];//matrix containing all weights between the layers
+  
 //---------------------------------------------------------------------------------------------------------------------------------------------------------  
 
   //constructor
@@ -34,6 +37,41 @@ class NeuralNet {
     whi.randomize();
     whh.randomize();
     woh.randomize();
+  }
+  
+  //Constructor
+  NeuralNet(int inputs, int hiddenNo; int outputNo, int hiddenLayers)
+  {
+  
+  //Set dimensions from parameters
+    iNodes = inputs;
+    oNodes = outputNo;
+    hNodes = hiddenNo;
+    
+    
+    //create first layer weights(input layer)
+    //included bias weight
+    weights[0] = new Matrix(hNodes, iNodes+1);
+    
+    //create second layer weights(hidden layers)
+    //bias included for each hidden layer in for loop
+    for(int i  = 1; i < hiddenLayers; i++)
+    {
+      weights[i] = new Matrix(hNodes, hNodes +1)
+    }
+    //create third layer weights(output layer)
+    //included bias weight
+    weights[weights.length-1] = new Matrix(oNodes, hNodes +1);
+    
+    //set the matricies to random values
+    weights[0].randomize();
+    
+    for(int i=0; i < hiddenLayers; i++)
+    {
+      weights[i].randomize();
+    }
+    
+    weights[weights.length-1].randomize();
   }
 //---------------------------------------------------------------------------------------------------------------------------------------------------------  
 
