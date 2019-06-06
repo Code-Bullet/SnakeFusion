@@ -120,6 +120,44 @@ class NeuralNet {
     return outputs.toArray();
   }
 //---------------------------------------------------------------------------------------------------------------------------------------------------------  
+  //calculate the output values by feeding forward through the deep neural network
+  float[] output_dnn(float[] inputsArr) {
+
+    //convert array to matrix
+    //Note weights[0] has nothing to do with it its just a function in the Matrix class
+    Matrix inputs = weights[0].singleColumnMatrixFromArray(inputsArr);
+
+    //add bias 
+    Matrix inputsBias = inputs.addBias();
+
+
+    //-----------------------calculate the guessed output
+
+    //apply layer one weights to the inputs
+    Matrix hiddenInputs = weights[0].dot(inputsBias);
+
+    //pass through activation function(sigmoid)
+    Matrix hiddenOutputs = hiddenInputs.activate();
+
+    //add bias
+    Matrix hiddenOutputsBias = hiddenOutputs.addBias();
+
+    //apply layer two weights
+    for(int i = 1; i < hiddenLayers; i++){
+      Matrix hiddenInputs2 = weights[i].dot(hiddenOutputsBias);
+      Matrix hiddenOutputs2 = hiddenInputs2.activate();
+      Matrix hiddenOutputsBias2 = hiddenOutputs2.addBias();
+    }
+    //apply level three weights
+    Matrix outputInputs = weights[weights.length-1].dot(hiddenOutputsBias2);
+    //pass through activation function(sigmoid)
+    Matrix outputs = outputInputs.activate();
+
+    //convert to an array and return
+    return outputs.toArray();
+  }
+//---------------------------------------------------------------------------------------------------------------------------------------------------------  
+  
   //crossover function for genetic algorithm
   NeuralNet crossover(NeuralNet partner) {
 
