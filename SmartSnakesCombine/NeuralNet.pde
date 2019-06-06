@@ -47,7 +47,7 @@ class NeuralNet {
     iNodes = inputs;
     oNodes = outputNo;
     hNodes = hiddenNo;
-    
+    hLayers = hiddenLayers
     
     //create first layer weights(input layer)
     //included bias weight
@@ -66,7 +66,7 @@ class NeuralNet {
     //set the matricies to random values
     weights[0].randomize();
     
-    for(int i=0; i < hiddenLayers; i++)
+    for(int i=0; i < hLayers; i++)
     {
       weights[i].randomize();
     }
@@ -142,8 +142,8 @@ class NeuralNet {
     //add bias
     Matrix hiddenOutputsBias = hiddenOutputs.addBias();
 
-    //apply layer two weights
-    for(int i = 1; i < hiddenLayers; i++){
+    //apply hidden layer two weights
+    for(int i = 1; i < hLayers; i++){
       Matrix hiddenInputs2 = weights[i].dot(hiddenOutputsBias);
       Matrix hiddenOutputs2 = hiddenInputs2.activate();
       Matrix hiddenOutputsBias2 = hiddenOutputs2.addBias();
