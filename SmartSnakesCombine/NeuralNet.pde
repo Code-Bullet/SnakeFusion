@@ -3,10 +3,13 @@ class NeuralNet {
   int iNodes;//No. of input nodes
   int hNodes;//No. of hidden nodes
   int oNodes;//No. of output nodes
+  int hLayers;//No. of hidden layers
 
   Matrix whi;//matrix containing weights between the input nodes and the hidden nodes
   Matrix whh;//matrix containing weights between the hidden nodes and the second layer hidden nodes
   Matrix woh;//matrix containing weights between the second hidden layer nodes and the output nodes
+  Matrix weights[];//matrix containing all weights between the layers
+  
 //---------------------------------------------------------------------------------------------------------------------------------------------------------  
 
   //constructor
@@ -34,6 +37,41 @@ class NeuralNet {
     whi.randomize();
     whh.randomize();
     woh.randomize();
+  }
+  
+  //Constructor
+  NeuralNet(int inputs, int hiddenNo; int outputNo, int hiddenLayers)
+  {
+  
+  //Set dimensions from parameters
+    iNodes = inputs;
+    oNodes = outputNo;
+    hNodes = hiddenNo;
+    hLayers = hiddenLayers
+    
+    //create first layer weights(input layer)
+    //included bias weight
+    weights[0] = new Matrix(hNodes, iNodes+1);
+    
+    //create second layer weights(hidden layers)
+    //bias included for each hidden layer in for loop
+    for(int i  = 1; i < hLayers; i++)
+    {
+      weights[i] = new Matrix(hNodes, hNodes +1)
+    }
+    //create third layer weights(output layer)
+    //included bias weight
+    weights[weights.length-1] = new Matrix(oNodes, hNodes +1);
+    
+    //set the matricies to random values
+    weights[0].randomize();
+    
+    for(int i=0; i < hLayers; i++)
+    {
+      weights[i].randomize();
+    }
+    
+    weights[weights.length-1].randomize();
   }
 //---------------------------------------------------------------------------------------------------------------------------------------------------------  
 
@@ -82,6 +120,44 @@ class NeuralNet {
     return outputs.toArray();
   }
 //---------------------------------------------------------------------------------------------------------------------------------------------------------  
+  //calculate the output values by feeding forward through the deep neural network
+  float[] output_dnn(float[] inputsArr) {
+
+    //convert array to matrix
+    //Note weights[0] has nothing to do with it its just a function in the Matrix class
+    Matrix inputs = weights[0].singleColumnMatrixFromArray(inputsArr);
+
+    //add bias 
+    Matrix inputsBias = inputs.addBias();
+
+
+    //-----------------------calculate the guessed output
+
+    //apply layer one weights to the inputs
+    Matrix hiddenInputs = weights[0].dot(inputsBias);
+
+    //pass through activation function(sigmoid)
+    Matrix hiddenOutputs = hiddenInputs.activate();
+
+    //add bias
+    Matrix hiddenOutputsBias = hiddenOutputs.addBias();
+
+    //apply hidden layer two weights
+    for(int i = 1; i < hLayers; i++){
+      Matrix hiddenInputs2 = weights[i].dot(hiddenOutputsBias);
+      Matrix hiddenOutputs2 = hiddenInputs2.activate();
+      Matrix hiddenOutputsBias2 = hiddenOutputs2.addBias();
+    }
+    //apply level three weights
+    Matrix outputInputs = weights[weights.length-1].dot(hiddenOutputsBias2);
+    //pass through activation function(sigmoid)
+    Matrix outputs = outputInputs.activate();
+
+    //convert to an array and return
+    return outputs.toArray();
+  }
+//---------------------------------------------------------------------------------------------------------------------------------------------------------  
+  
   //crossover function for genetic algorithm
   NeuralNet crossover(NeuralNet partner) {
 
